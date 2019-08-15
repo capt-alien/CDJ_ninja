@@ -23,6 +23,14 @@
                 background-image: url('sushi.png');
                 background-size: contain;
             }
+            .onigiri {
+                background-color: black;
+                height: 40px;
+                width: 40px;
+                display: inline-block;
+                background-image: url('onigiri.png');
+                background-size: contain;
+            }
             .blank {
                 background-color: black;
                 height: 40px;
@@ -37,35 +45,43 @@
                 background-image: url('ninja.gif');
                 background-size: contain;
                 position: absolute;
-         /*       left: 40px;
-                top: 40px;*/
+            }
+            #score {        
+                background-color: green;
+                height: 40px;
+                font-size: 30;
+            }
+
+
 </style>
 </head>
 <body>
     <div id='world'></div>
-<div id='ninjaman'></div>
+    <div id='ninjaman'></div>
+    <div id="score"></div>
 
 </body>
 <script type="text/javascript">
     var world =[
-        [1,1,1,1,1],
-        [1,0,2,2,1],
-        [1,1,0,2,1],
-        [1,2,2,2,1],
-        [1,1,1,2,1],
-        [1,0,2,2,1],
-        [1,1,0,2,1],
-        [1,2,2,2,1],
-        [1,1,1,2,1],
-        [1,0,2,2,1],
-        [1,1,0,2,1],
-        [1,2,2,1,1],
-        [1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,0,2,2,1,0,1],
+        [1,1,0,2,1,2,1],
+        [1,2,2,2,1,2,1],
+        [1,1,1,2,1,2,1],
+        [1,0,2,2,3,2,1],
+        [1,1,3,2,2,2,1],
+        [1,2,2,2,2,3,1],
+        [1,1,1,2,2,3,1],
+        [1,0,2,2,3,3,1],
+        [1,1,0,2,2,1,1],
+        [1,2,2,1,2,2,1],
+        [1,1,1,1,1,1,1],
         ];
     var worldDict = {
         0: 'blank',
         1: 'wall',
-        2: 'sushi'
+        2: 'sushi',
+        3: 'onigiri'
     }
     function drawWorld(){
         output = "";
@@ -79,39 +95,66 @@
             output += "</div>"
         }
 
-        document.getElementById('world').innerHTML =
-            output;
+        document.getElementById('world').innerHTML = output;
+        // document.getElementById('score').innerHTML = "Score: " + ninjaman.score;
+
     }
+
+
     drawWorld()
 
     var ninjaman = {
         x:1,
-        y:1
+        y:1,
+        score: 0
     }
 
     function drawNinjaman(){
         document.getElementById('ninjaman').style.top=
-            ninjaman.x * 40 + 'px'
-        document.getElementById('ninjaman').style.left=
             ninjaman.y * 40 + 'px'
+        document.getElementById('ninjaman').style.left=
+            ninjaman.x * 40 + 'px'
     }
     drawNinjaman();
 
     document.onkeydown = function(e){
-        if(e.keyCode == 37){
+        if(e.keyCode == 37){ //left
+            if(world[ninjaman.y][ninjaman.x - 1] != 1){
             ninjaman.x--;
+            }
         }
-        if(e.keyCode == 39){
+        if(e.keyCode == 39){//right
+            if(world[ninjaman.y][ninjaman.x + 1] != 1){
             ninjaman.x++;
+            }
         }    
-        if(e.keyCode == 38){
-            ninjaman.y++;
-        }
-        if(e.keyCode == 40){
+        if(e.keyCode == 38){ //up
+            if(world[ninjaman.y - 1][ninjaman.x] != 1){
             ninjaman.y--;
+            }
         }
+        if(e.keyCode == 40){ //down
+           if(world[ninjaman.y + 1][ninjaman.x] != 1){ 
+            ninjaman.y++;
+            }
+        }
+        scorekeep()
+        world[ninjaman.y][ninjaman.x] = 0;
         drawNinjaman()
+        drawWorld()
     }
+
+    //Keep score of sushi ninjaman eats 10pts/ sushi
+    function scorekeep(){
+        if (world[ninjaman.y][ninjaman.x] = 1){
+            ninjaman.score += 10
+        }
+        else if (world[ninjaman.y][ninjaman.x] = 2){
+            ninjaman.score += 5
+        }
+        console.log(ninjaman.score)
+    }
+
 
 </script>
 </html>
