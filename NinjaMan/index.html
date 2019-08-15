@@ -37,8 +37,8 @@
                 background-image: url('ninja.gif');
                 background-size: contain;
                 position: absolute;
-                left: 40px;
-                top: 40px;
+         /*       left: 40px;
+                top: 40px;*/
 </style>
 </head>
 <body>
@@ -49,6 +49,14 @@
 <script type="text/javascript">
     var world =[
         [1,1,1,1,1],
+        [1,0,2,2,1],
+        [1,1,0,2,1],
+        [1,2,2,2,1],
+        [1,1,1,2,1],
+        [1,0,2,2,1],
+        [1,1,0,2,1],
+        [1,2,2,2,1],
+        [1,1,1,2,1],
         [1,0,2,2,1],
         [1,1,0,2,1],
         [1,2,2,1,1],
@@ -75,5 +83,35 @@
             output;
     }
     drawWorld()
+
+    var ninjaman = {
+        x:1,
+        y:1
+    }
+
+    function drawNinjaman(){
+        document.getElementById('ninjaman').style.top=
+            ninjaman.x * 40 + 'px'
+        document.getElementById('ninjaman').style.left=
+            ninjaman.y * 40 + 'px'
+    }
+    drawNinjaman();
+
+    document.onkeydown = function(e){
+        if(e.keyCode == 37){
+            ninjaman.x--;
+        }
+        if(e.keyCode == 39){
+            ninjaman.x++;
+        }    
+        if(e.keyCode == 38){
+            ninjaman.y++;
+        }
+        if(e.keyCode == 40){
+            ninjaman.y--;
+        }
+        drawNinjaman()
+    }
+
 </script>
 </html>
