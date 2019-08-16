@@ -22,12 +22,19 @@
 			width: 70px;
 			height: 75px;
 		}
+		.missile {
+			position: absolute;
+			background-color: orange;
+			width: 2px;
+			height:10px;
+		}
 
 	</style>
 
 	<div id="ocean">
 		<div id="players"></div>
 		<div id="enmies"></div>
+		<div id="missiles"></div>
 	</div>
 
 
@@ -47,6 +54,7 @@
 		{left: 250, top:150},
 		{left: 650, top:150},
 		]
+	var missiles = []
 
 	// Functions
 	function drawPlayer(){
@@ -65,13 +73,27 @@
 	function moveEnemies(){
 		for(var i = 0; i < enemies.length; i++){
 			enemies[i].top = enemies[i].top +5
+			enemies[i].left = enemies[i].left +3
 		}
+	}
+
+	function moveMissiles(){
+		for(var i = 0; i < missiles.length; i++){
+		missiles[i].top = missiles[i].top -20;
+		}
+	}
+
+	function drawMissiles(){
+		content = ""
+		for(var i=0; i<missiles.length; i++){
+			content += "<div class='missile' style='left:"+missiles[i].left+"px; top:"+missiles[i].top+"px'></div>"
+		}
+		document.getElementById("missiles").innerHTML = content
 	}
 
 
 	// Comand and control of Aircraft
 	document.onkeydown = function(e){
-		console.log(e);
 		if(e.keyCode == 37){ //left
 			if(player.left > 10){
 			player.left = player.left - 10;
@@ -92,20 +114,27 @@
 			player.top = player.top + 10;
 			}
 		}
+		if(e.keyCode == 32){  //fire
+			missiles.push( {left: (player.left+34), top: (player.top- 8) } )
+			drawMissiles();
+		}
+					
 		drawPlayer();
 	}
 
 	// Game Loop
 	function gameLoop(){
-		// console.log("G-Loop Legit!")
 		
 		drawPlayer()
 		
 		moveEnemies()
 		drawEnemies()
 
+		moveMissiles()
+		drawMissiles()
 
-		setTimeout(gameLoop, 100)
+
+		setTimeout(gameLoop, 50)
 	}
 
 	// Function Calls
